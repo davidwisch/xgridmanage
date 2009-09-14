@@ -79,15 +79,13 @@ class Deploy:
 		if stats.find('Finished') == -1:
 			print "Job Not Complete"
 			exit()
-		'''
 		if not os.path.exists("RESULTS"):
 			os.mkdir("RESULTS")
-		std_out = open("RESULTS/stdout.txt", 'w')
+		std_out = open("RESULTS/id_"+str(job_id)+"_stdout.txt", 'w')
 		prog_std_out = self.exec_cmd('-job results -id '+str(job_id))
 		print prog_std_out
-		std_out.write(prog_std_out+"\n")
+		std_out.write(prog_std_out)
 		std_out.close()
-		'''
 	
 	def exec_cmd(self, cmd):
 		cmd = "xgrid -h "+self.HOSTNAME+" -p "+self.PASSWORD+" "+cmd
