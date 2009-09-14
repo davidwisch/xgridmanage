@@ -35,8 +35,7 @@ class Deploy:
 				os.mkdir("SUBMIT")
 			shutil.copy(file, "SUBMIT/"+file)
 			dep_cmd = "-job submit "+file+" -in ./SUBMIT"
-			log = open("submit_ids.txt", "w")
-			log.write("NUMCOMPS "+str(num_comps)+"\n")
+			log = open("submit_ids", "w")
 			for i in range(num_comps):
 				output = self.exec_cmd(dep_cmd)
 				regex = "jobIdentifier\ =\ (?P<jobid>\d+);"
@@ -57,6 +56,22 @@ class Deploy:
 	def detail(self, job_id):
 		print self.exec_cmd("-job attributes -id "+str(job_id))
 
+	def project_detail(self, job_file):
+		if not os.path.exists(job_file):
+			print "File Does Not Exist"
+			exit()
+		f = open(job_file)
+		lines = f.readlines()
+		for line in lines:
+			job_id = line.strip()
+			stats = self.exec_cmd("-job attributes -id "+str(job_id))
+			regex = "jobStatus\ =\ (?P<status>\w+);"
+			regex = re.compile(regex)
+			results = regex.search(stats)
+			print "Job ID: "+str(job_id)+"\t----"+results.group('status')
+			#print stats
+		f.close()
+
 	def kill_id(self, job_id):
 		self.exec_cmd("-job delete -id "+str(job_id))
 		print "Job "+str(job_id)+" Deleted"
@@ -68,10 +83,9 @@ class Deploy:
 		f = open(job_file)
 		lines = f.readlines()
 		for line in lines:
-			if line.find('NUMCOMPS') != -1:
-				continue
 			job_id = line.strip()
 			self.kill_id(job_id)
+		f.close()
 		print "All ID's in file: "+job_file+" are deleted"
 
 	def result_id(self, job_id):
@@ -81,11 +95,24 @@ class Deploy:
 			exit()
 		if not os.path.exists("RESULTS"):
 			os.mkdir("RESULTS")
-		std_out = open("RESULTS/id_"+str(job_id)+"_stdout.txt", 'w')
+		std_out = open("RESULTS/id_"+str(job_id)+"_stdout", 'w')
 		prog_std_out = self.exec_cmd('-job results -id '+str(job_id))
 		print prog_std_out
 		std_out.write(prog_std_out)
 		std_out.close()
+		self.exec_cmd('-job results -id '+str(job_id)+" -out RESULTS/id_"+str(job_id)+'/')
+
+	def result_job(self, job_file):
+		if not os.path.exists(job_file):
+			print "File Does Not Exist"
+			exit()
+		f = open(job_file)
+		lines = f.readlines()
+		for line in lines:
+			job_id = line.strip()
+			self.result_id(job_id)
+		f.close()
+		print "Finished Fetching Results"
 	
 	def exec_cmd(self, cmd):
 		cmd = "xgrid -h "+self.HOSTNAME+" -p "+self.PASSWORD+" "+cmd
@@ -141,6 +168,11 @@ if __name__ == "__main__":
 			help="Get results for all ids in file, deliniated by \"\\n\"",
 			metavar="FILE"
 			)
+	parser.add_option('-s', '--status',
+			dest="statusfile",
+			help="Get status for all ids in file, delinieated by \"\\n\"",
+			metavar="FILE"
+			)
 	(options, args) = parser.parse_args()
 
 	xgrid = Deploy()
@@ -154,8 +186,10 @@ if __name__ == "__main__":
 	if options.list:
 		xgrid.list()
 	if options.backfile:
-		pass
+		xgrid.result_job(options.backfile)
 	if options.kill:
 		xgrid.kill_id(options.kill)
 	if options.result:
 		xgrid.result_id(options.result)
+	if options.statusfile:
+		xgrid.project_detail(options.statusfile)
