@@ -103,8 +103,8 @@ class Xgrid:
 	def result_id(self, job_id):
 		stats = self.exec_cmd("-job attributes -id "+str(job_id))
 		if stats.find('Finished') == -1:
-			print "Job Not Complete"
-			exit()
+			print "Job Not Complete - Job ID: "+str(job_id)
+			return
 		if not os.path.exists("RESULTS"):
 			os.mkdir("RESULTS")
 		std_out = open("RESULTS/id_"+str(job_id)+"_stdout", 'w')
