@@ -18,13 +18,13 @@ import subprocess as sp
 import re
 from optparse import OptionParser
 
-class Deploy:
+class Xgrid:
 	HOSTNAME = None
 	PASSWORD = None
 
 	def __init__(self):
 		try:
-			config_file = open(".xKingrc")
+			config_file = open("~/.xgridmanagerc")
 		except:
 			print "Unable to Locate Config file...exiting"
 			exit()
@@ -186,7 +186,7 @@ if __name__ == "__main__":
 			)
 	(options, args) = parser.parse_args()
 
-	xgrid = Deploy()
+	xgrid = Xgrid()
 	if options.info:
 		xgrid.detail(options.info)
 	if options.deploy:
