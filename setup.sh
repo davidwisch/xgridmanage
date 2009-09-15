@@ -48,27 +48,18 @@ if (test -e ./$deploy_script); then
 	chmod 755 $path_dir/$deploy_script >> /dev/null
 fi
 
-echo Checking for .bashrc or .bash_profile...'\c'
-if (test -w ~/.bashrc); then
-	echo $GREEN Found .bashrc $END
-	echo PATH=$PATH:$path_dir >> ~/.bashrc
-	echo export PATH >> ~/.bashrc
+echo Checking for .profile...
+if (test -w ~/.profile); then
+	echo $GREEN Found .profile $END
+	echo PATH=$PATH:$path_dir >> ~/.profile
+	echo export PATH >> ~/.profile
 	PATH=$PATH:$path_dir >> /dev/null
 	export PATH >> /dev/null
-	echo $path_dir successfully added to path and exported to .bashrc.
+	echo $path_dir successfully added to path and exported to .profile.
 else
-	if (test -w ~/.bash_profile); then
-		echo $GREEN Found .bash_profile $END
-		echo PATH=$PATH:$path_dir >> ~/.bash_profile
-		echo export PATH >> ~/.bash_profile
-		PATH=$PATH:$path_dir >> /dev/null
-		export PATH >> /dev/null
-		echo $path_dir successfully added to path and exported to .bash_profile.
-	else
-		echo $GREEN Failed. $END
-		echo Insert \"PATH=\$PATH:$path_dir\; export PATH\" somewhere in either of those files
-		exit
-	fi
+	echo $RED Failed. $END
+	echo Insert \"PATH=\$PATH:$path_dir\; export PATH\" somewhere
+	exit
 fi
 
 echo Compmeted setup, $deploy_script is now in your PATH
