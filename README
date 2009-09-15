@@ -7,7 +7,7 @@ wrapper to the OSX xgrid command line interface.  The script
 itself is written in Python, but the 'install' (it doesn't really
 install anything) is written in bash.  I wrote this project to
 help out one of my professors and a research student of his.
-These scripts are distributed with no warrently; use at your own
+These scripts are distributed with no warranty; use at your own
 risk.  If you modify/redistribute any code I ask that you please
 leave my name at the top.  I'm not a professional programmer so
 please forgive code that isn't up to standards, will improve in
@@ -57,7 +57,7 @@ xgridmanage -f submit_ids
 
 Other options can be found by typing 'xgridmanage -h'
 
-Resutls
+Results
 ========
 
 When you retrieve results from xgrid, they're placed in a RESULTS folder.
@@ -82,3 +82,4 @@ HOSTNAME localhost
 PASSWORD mysecretpassword
 
 A sample config file is provided with the rest of the files.
+The real config filename must be named .xgridmanagerc
