@@ -24,7 +24,8 @@ class Xgrid:
 
 	def __init__(self):
 		try:
-			config_file = open("~/.xgridmanagerc")
+			HOME = os.environ.get('HOME')
+			config_file = open(HOME+"/.xgridmanagerc")
 		except:
 			print "Unable to Locate Config file...exiting"
 			exit()

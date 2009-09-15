@@ -14,7 +14,7 @@
 #--------------------------------
 
 path_dir=$HOME/"path"
-deploy_script="deploy"
+deploy_script="xgridmanage"
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
