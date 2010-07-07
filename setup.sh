@@ -9,8 +9,6 @@
 #
 # Use this script at your own risk - it's my first BASH script, might be horrible
 #
-# If you modify/redistribute this script, please leave my name at the top
-#
 #--------------------------------
 
 path_dir=$HOME/"path"

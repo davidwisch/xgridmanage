@@ -5,10 +5,6 @@ Author: David Wischhusen
 Date Created: September 12, 2009
 
 Purpose of this script is to provide a more friendly interface to OSX xgrid.
-
-Use this script at your own risk.
-
-If you modify/redistribute this script, please keep my name at the top
 """
 
 import sys
